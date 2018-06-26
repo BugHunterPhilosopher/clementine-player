@@ -1,0 +1,30 @@
+{
+  "name": "clementine-player",
+  "color": "#0074D9",
+  "skillMetadata": {
+    "sections": [
+      {
+        "name": "Basic Settings",
+        "fields": [
+          {
+            "name": "verbose",
+            "type": "checkbox",
+            "label": "Verbose",
+            "value": false
+          },
+          {
+            "type": "label",
+            "name": "verbose_label",
+            "label": "<p>If you'd like Mycroft to give a verbal confirmation after you give him a command related to your Philip's Hue lights, check the 'Verbose' box.</p>"
+          },
+          {
+            "name": "clementineaddress",
+            "type": "text",
+            "label": "<p>IP or host name of the Clementine player.</p>",
+            "value": ""
+          }
+        ]
+      }
+    ]
+  }
+}
