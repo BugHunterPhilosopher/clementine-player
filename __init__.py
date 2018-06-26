@@ -32,6 +32,7 @@ class ClementinePlayerSkill(MycroftSkill):
 
     def __init__(self):
         super(ClementinePlayerSkill, self).__init__(name="ClementinePlayerSkill")
+
         self.player = dbus.SessionBus().get_object('org.mpris.MediaPlayer2.clementine', '/org/mpris/MediaPlayer2')
 
     def initialize(self):
