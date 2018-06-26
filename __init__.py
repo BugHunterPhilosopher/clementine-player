@@ -33,13 +33,7 @@ class ClementinePlayerSkill(MycroftSkill):
   def __init__(self):
     super(ClementinePlayerSkill, self).__init__(name="ClementinePlayerSkill")
 
-    # Clementine lives on the Session bus
-    session_bus = dbus.SessionBus()
-
-    # Get Clementine's player object, and then get an interface from that object,
-    # otherwise we'd have to type out the full interface name on every method call.
-    player = session_bus.get_object('org.mpris.MediaPlayer2.clementine', '/Player')
-    self.iface = dbus.Interface(player, dbus_interface='org.freedesktop.MediaPlayer')
+    self.player = dbus.SessionBus().get_object('org.mpris.MediaPlayer2.clementine', '/org/mpris/MediaPlayer2')
 
   def initialize(self):
     self.load_data_files(dirname(__file__))
@@ -66,29 +60,31 @@ class ClementinePlayerSkill(MycroftSkill):
     self.register_intent(vol_minus_intent, self.handle_vol_minus_intent)
 
   def handle_play_intent(self):
-    self.iface.Play()
+    self.player.Play()
 
   def handle_pause_intent(self):
-    self.iface.Pause()
+    self.player.Pause()
 
   def handle_stop_intent(self):
-    self.iface.Stop()
+    self.player.Stop()
 
   def handle_previous_intent(self):
-    self.iface.Prev()
+    self.player.Prev()
 
   def handle_next_intent(self):
-    self.iface.Next()
+    self.player.Next()
 
   def handle_vol_plus_intent(self):
-    volume = self.iface.Get('org.freedesktop.MediaPlayer', 'Volume')
-    print(volume)
-    self.iface.Set('org.freedesktop.MediaPlayer', 'Volume', volume + 0.2)
+    volume = self.player.Get('org.mpris.MediaPlayer2.Player', 'Volume',
+                             dbus_interface='org.freedesktop.DBus.Properties')
+    property_interface = dbus.Interface(self.player, dbus_interface='org.freedesktop.DBus.Properties')
+    property_interface.Set('org.mpris.MediaPlayer2.Player', 'Volume', volume + 0.2)
 
   def handle_vol_minus_intent(self):
-    volume = self.iface.Get('org.freedesktop.MediaPlayer', 'Volume')
-    print(volume)
-    self.iface.Set('org.freedesktop.MediaPlayer', 'Volume', volume - 0.2)
+    volume = self.player.Get('org.mpris.MediaPlayer2.Player', 'Volume',
+                             dbus_interface='org.freedesktop.DBus.Properties')
+    property_interface = dbus.Interface(self.player, dbus_interface='org.freedesktop.DBus.Properties')
+    property_interface.Set('org.mpris.MediaPlayer2.Player', 'Volume', volume - 0.2)
 
   def stop(self):
     pass
