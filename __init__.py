@@ -38,7 +38,7 @@ class ClementinePlayerSkill(MycroftSkill):
 
     # Get Clementine's player object, and then get an interface from that object,
     # otherwise we'd have to type out the full interface name on every method call.
-    player = session_bus.get_object('org.mpris.clementine', '/Player')
+    player = session_bus.get_object('org.mpris.MediaPlayer2.clementine', '/Player')
     self.iface = dbus.Interface(player, dbus_interface='org.freedesktop.MediaPlayer')
 
   def initialize(self):
